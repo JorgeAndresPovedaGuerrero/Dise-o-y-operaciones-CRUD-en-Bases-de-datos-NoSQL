@@ -147,3 +147,33 @@ db.tablaPosiciones.updateOne(
 
 //eliminar un registro de tablaPosiciones
 db.tablaPosiciones.deleteOne({ "_id": "EQUIPO001" });
+
+//====== CRUD TABLA DE SANCIONES ======
+//Crear un registro de la tabla de sanciones
+db.sanciones.insertOne({
+  "_id": "SANC001",
+  "jugadorId": "JUG001", 
+  "equipoId": "EQUIPO001", 
+  "tipoSancion": "Tarjeta Roja",
+  "descripcion": "El jugador Pedro Ramírez fue expulsado por conducta antideportiva.",
+  "fechaSancion": "2024-11-20T16:30:00",
+  "partidosSancionados": 2
+});
+
+
+//leer todas las saciones:
+db.sanciones.find();
+
+//Actualizar una sancion:
+db.sanciones.updateOne(
+  { "_id": "SANC001" },
+  { $set: { "partidosSancionados": 3 } }
+);
+
+//Eliminar una sanción
+db.sanciones.deleteOne({ "_id": "SANC001" });
+
+
+
+
+
