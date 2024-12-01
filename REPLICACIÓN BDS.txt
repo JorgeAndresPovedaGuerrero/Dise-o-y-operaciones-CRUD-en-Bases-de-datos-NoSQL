@@ -1,0 +1,21 @@
+//Replicación
+//PASO 1
+mongosh --port 27018
+mongod --dbpath c:\mongodb\db1 --replSet replica1 --port 27018
+mongod --dbpath c:\mongodb\db2 --replSet replica1 --port 27019
+mongod --dbpath c:\mongodb\db3 --replSet replica1 --port 27020
+mongosh --port 27018
+
+//Nodo primario
+rs.initiate()
+//agregamos los otros dos
+rs.add("localhost:27019")
+rs.add("localhost:27020")
+rs.conf()
+rs.status()
+mongosh --port 27018
+use eventos; 
+db.participantes.insertOne({ nombre: "Juan", deporte: "Fútbol", edad: 25 });
+mongosh --port 27019
+use eventos; 
+db.participantes.find();
