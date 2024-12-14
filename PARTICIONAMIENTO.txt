@@ -1,0 +1,39 @@
+# 1. Crear directorios para los datos del cluster
+mkdir <ruta_directorio_datos>
+
+# 2. Iniciar el servidor de configuración (Config Server)
+mongod --configsvr --replSet <nombre_del_replicaset> --dbpath <ruta> --port <puerto> --bind_ip <dirección>
+
+# 3. Iniciar los shards
+mongod --shardsvr --replSet <nombre_del_replicaset> --dbpath <ruta> --port <puerto> --bind_ip <dirección>
+
+# 4. Iniciar el Mongo router (mongos)
+mongos --configdb <nombre_configserver> --port <puerto>
+
+# 5. Conectarse al router (mongos)
+mongo --host <host_del_router> --port <puerto>
+
+# 6. Inicializar el Replica Set
+rs.initiate()
+
+# 7. Verificar el estatus del Replica Set
+rs.status()
+
+# 8. Conectarse a cada shard e inicializar los Replica Sets
+# Para cada shard:
+rs.initiate()
+
+# 9. Agregar shards al cluster desde el router
+sh.addShard("<nombre_replicaset>/localhost:<puerto>")
+sh.addShard("<nombre_replicaset>/localhost:<puerto>")
+sh.addShard("<nombre_replicaset>/localhost:<puerto>")
+
+# 10. Habilitar el sharding para una base de datos
+sh.enableSharding("<nombre_base_de_datos>")
+
+# 11. Crear una colección shard
+db.createCollection("<nombre_colección>")
+sh.shardCollection("<nombre_base_de_datos>.<nombre_colección>", { <campo>: <tipo> })
+
+# 12. Validar los shards agregados
+sh.status()
